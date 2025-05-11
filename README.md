@@ -1,26 +1,50 @@
-# DailyBytes 📱📰  
-A Flutter app that fetches and displays a list of articles from a public API.  
-Users can search, mark favorites, view full article details, and experience a smooth, user-friendly interface.
+DailyBytes 📱📰
+A Flutter app that fetches and displays a list of articles from a public API.
+Users can search, mark favorites, view full article details, and enjoy a smooth, user-friendly interface.
 
-## ✨ Features
-- List of articles from a public API
-- Search functionality (client-side)
-- Article detail view
-- Favorites tab with persistence (SharedPreferences)
-- Pull-to-refresh
-- Splash screen
-- Custom app icon
-- Smooth UI animations
-- Comments section with draggable sheet
-- Share dialog with modern styling
-- Responsive design and accessibility enhancements
+✨ Features
+Fetch articles from a public API
 
-## 🚀 Setup Instructions
-1. Clone the repo:
-   ```bash
-   git clone <your-repo-link>
-   cd dailybytes
-   
+Client-side search functionality
+
+Detailed article view
+
+Favorites tab with persistence (SharedPreferences)
+
+Pull-to-refresh support
+
+Splash screen
+
+Custom app icon
+
+Smooth UI animations and transitions
+
+Comments section (UI only) with draggable sheet
+
+Share dialog (UI only) with modern design
+
+Responsive design and accessibility improvements
+
+🚀 Setup Instructions
+Clone the repository:
+
+bash
+Copy
+Edit
+git clone <your-repo-link>
+cd dailybytes
+Get dependencies:
+
+bash
+Copy
+Edit
+flutter pub get
+Run the app:
+
+bash
+Copy
+Edit
+flutter run
 🛠️ Tech Stack
 Flutter SDK: 3.x
 
@@ -28,24 +52,20 @@ State Management: Provider
 
 HTTP Client: http
 
-Persistence: SharedPreferences (for favorites)
+Persistence: SharedPreferences
 
 🧠 State Management Explanation
 This app uses the Provider package for state management.
-All article data and favorite logic are handled in a centralized ArticleProvider class using ChangeNotifier.
-UI widgets rebuild responsively through Consumer or context.watch, maintaining a clean separation of logic and UI.
+The ArticleProvider class extends ChangeNotifier and manages article fetching, searching, and favorites.
+Widgets listen to changes using Consumer or context.watch, allowing for reactive UI updates while keeping business logic separate from presentation.
 
 ⚠️ Known Issues / Limitations
 Comments feature is UI-only (not backed by a live database)
 
-Share with friends feature is UI-only (not functionally implemented)
+Share with friends feature is UI-only (no actual sharing implemented)
 
-Data is fetched from a static API (jsonplaceholder.typicode.com) without pagination
+Articles are fetched from a static API (jsonplaceholder.typicode.com) without pagination
 
-Client-side search is case-sensitive and limited to current list
+Client-side search is case-sensitive and limited to the fetched list
 
-Favorites stored locally, not synced across devices!
-
-
-
-
+Favorites are stored locally and not synced across devices
