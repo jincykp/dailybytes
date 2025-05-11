@@ -1,4 +1,5 @@
 import 'package:dailybytes/view/screens/home_screen.dart';
+import 'package:dailybytes/view/screens/splash_screen.dart';
 import 'package:dailybytes/viewmodel/article_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.system,
-        home: HomeScreen(),
+        home: SplashScreen(),
       ),
     );
   }

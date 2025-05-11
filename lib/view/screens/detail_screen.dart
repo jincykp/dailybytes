@@ -12,6 +12,7 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<ArticleProvider>(context);
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
       body: SafeArea(
@@ -26,7 +27,7 @@ class DetailScreen extends StatelessWidget {
                 icon: Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.black12,
+                    color: isDarkMode ? Colors.white10 : Colors.black12,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.arrow_back, color: theme.primaryColor),
@@ -39,7 +40,7 @@ class DetailScreen extends StatelessWidget {
                   icon: Container(
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.black12,
+                      color: isDarkMode ? Colors.white10 : Colors.black12,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(Icons.share, color: theme.primaryColor),
@@ -78,6 +79,8 @@ class DetailScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               height: 1.3,
                               letterSpacing: -0.5,
+                              // Using theme.textTheme.titleLarge?.color ensures proper contrast
+                              color: theme.textTheme.titleLarge?.color,
                             ),
                           ),
                         ],
@@ -94,7 +97,11 @@ class DetailScreen extends StatelessWidget {
                               fontSize: 56,
                               fontWeight: FontWeight.bold,
                               height: 0.8,
-                              color: theme.primaryColor,
+                              // Using a more visible color combination that works in both modes
+                              color:
+                                  isDarkMode
+                                      ? Colors.lightBlue[300]
+                                      : theme.primaryColor,
                             ),
                           ),
                           TextSpan(
@@ -102,7 +109,8 @@ class DetailScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 17,
                               height: 1.7,
-                              color: Colors.black87,
+                              // Using theme.textTheme.bodyLarge?.color instead of hardcoded Colors.black87
+                              color: theme.textTheme.bodyLarge?.color,
                               letterSpacing: 0.3,
                             ),
                           ),
@@ -141,6 +149,8 @@ class DetailScreen extends StatelessWidget {
     ArticleProvider provider,
     ThemeData theme,
   ) {
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return IconButton(
       icon: AnimatedContainer(
         duration: Duration(milliseconds: 300),
@@ -149,6 +159,8 @@ class DetailScreen extends StatelessWidget {
           color:
               provider.isFavorite(article.id)
                   ? Colors.red.withOpacity(0.2)
+                  : isDarkMode
+                  ? Colors.white10
                   : Colors.black12,
           shape: BoxShape.circle,
         ),
@@ -200,7 +212,12 @@ class DetailScreen extends StatelessWidget {
       children: [
         Text(
           'How would you rate this article?',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            // Using theme color for better dark mode visibility
+            color: theme.textTheme.titleMedium?.color,
+          ),
         ),
         SizedBox(height: 16),
         Row(
@@ -223,6 +240,8 @@ class DetailScreen extends StatelessWidget {
     String label,
     ThemeData theme,
   ) {
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return InkWell(
       onTap: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -245,7 +264,11 @@ class DetailScreen extends StatelessWidget {
             SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+              style: TextStyle(
+                fontSize: 12,
+                // Using theme-based colors instead of hardcoded Colors.grey[700]
+                color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
+              ),
             ),
           ],
         ),
@@ -255,6 +278,7 @@ class DetailScreen extends StatelessWidget {
 
   void _showShareDialog(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     showModalBottomSheet(
       context: context,
@@ -283,7 +307,7 @@ class DetailScreen extends StatelessWidget {
                   height: 4,
                   margin: EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -292,37 +316,50 @@ class DetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 24),
                 child: Text(
                   'Share with friends',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: theme.textTheme.titleLarge?.color,
+                  ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildShareOption(
-                    context,
-                    Icons.message,
-                    'Message',
-                    Colors.blue[600]!,
+              // Wrap in a SingleChildScrollView to prevent overflow
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    children: [
+                      _buildShareOption(
+                        context,
+                        Icons.message,
+                        'Message',
+                        Colors.blue[600]!,
+                      ),
+                      SizedBox(width: 8),
+                      _buildShareOption(
+                        context,
+                        Icons.email,
+                        'Email',
+                        Colors.red[600]!,
+                      ),
+                      SizedBox(width: 8),
+                      _buildShareOption(
+                        context,
+                        Icons.link,
+                        'Copy Link',
+                        Colors.purple[600]!,
+                      ),
+                      SizedBox(width: 8),
+                      _buildShareOption(
+                        context,
+                        Icons.more_horiz,
+                        'More',
+                        Colors.orange[600]!,
+                      ),
+                    ],
                   ),
-                  _buildShareOption(
-                    context,
-                    Icons.email,
-                    'Email',
-                    Colors.red[600]!,
-                  ),
-                  _buildShareOption(
-                    context,
-                    Icons.link,
-                    'Copy Link',
-                    Colors.purple[600]!,
-                  ),
-                  _buildShareOption(
-                    context,
-                    Icons.more_horiz,
-                    'More',
-                    Colors.orange[600]!,
-                  ),
-                ],
+                ),
               ),
             ],
           ),
@@ -337,6 +374,8 @@ class DetailScreen extends StatelessWidget {
     String label,
     Color color,
   ) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: () {
         Navigator.pop(context);
@@ -352,9 +391,10 @@ class DetailScreen extends StatelessWidget {
         );
       },
       borderRadius: BorderRadius.circular(16),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 80, // Fixed width to prevent overflow
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: EdgeInsets.all(16),
@@ -365,7 +405,16 @@ class DetailScreen extends StatelessWidget {
               child: Icon(icon, color: color, size: 28),
             ),
             SizedBox(height: 8),
-            Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
+            Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: theme.textTheme.bodyMedium?.color,
+                fontSize: 13, // Slightly smaller text
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),
@@ -374,6 +423,7 @@ class DetailScreen extends StatelessWidget {
 
   void _showCommentsSheet(BuildContext context) {
     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
 
     showModalBottomSheet(
       context: context,
@@ -401,7 +451,10 @@ class DetailScreen extends StatelessWidget {
                           width: 40,
                           height: 4,
                           decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                            color:
+                                isDarkMode
+                                    ? Colors.grey[600]
+                                    : Colors.grey[300],
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
@@ -411,6 +464,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
+                            color: theme.textTheme.titleLarge?.color,
                           ),
                         ),
                       ],
@@ -446,8 +500,15 @@ class DetailScreen extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 18,
-                          backgroundColor: Colors.grey[300],
-                          child: Icon(Icons.person, color: Colors.grey[600]),
+                          backgroundColor:
+                              isDarkMode ? Colors.grey[700] : Colors.grey[300],
+                          child: Icon(
+                            Icons.person,
+                            color:
+                                isDarkMode
+                                    ? Colors.grey[300]
+                                    : Colors.grey[600],
+                          ),
                         ),
                         SizedBox(width: 12),
                         Expanded(
@@ -459,7 +520,10 @@ class DetailScreen extends StatelessWidget {
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
-                              fillColor: Colors.grey[200],
+                              fillColor:
+                                  isDarkMode
+                                      ? Colors.grey[800]
+                                      : Colors.grey[200],
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 8,
@@ -493,6 +557,9 @@ class DetailScreen extends StatelessWidget {
   }
 
   Widget _buildCommentItem(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
       margin: EdgeInsets.only(bottom: 16),
       child: Row(
@@ -500,8 +567,12 @@ class DetailScreen extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 16,
-            backgroundColor: Colors.grey[300],
-            child: Icon(Icons.person, color: Colors.grey[600], size: 16),
+            backgroundColor: isDarkMode ? Colors.grey[700] : Colors.grey[300],
+            child: Icon(
+              Icons.person,
+              color: isDarkMode ? Colors.grey[300] : Colors.grey[600],
+              size: 16,
+            ),
           ),
           SizedBox(width: 12),
           Expanded(
@@ -515,19 +586,26 @@ class DetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
+                        color: theme.textTheme.bodyLarge?.color,
                       ),
                     ),
                     SizedBox(width: 8),
                     Text(
                       '${_getRandomTime()}',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: 4),
                 Text(
                   'This is a sample comment. Great article, thanks for sharing!',
-                  style: TextStyle(fontSize: 14),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: theme.textTheme.bodyMedium?.color,
+                  ),
                 ),
                 SizedBox(height: 8),
                 Row(
@@ -535,18 +613,21 @@ class DetailScreen extends StatelessWidget {
                     Icon(
                       Icons.thumb_up_outlined,
                       size: 14,
-                      color: Colors.grey[600],
+                      color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                     ),
                     SizedBox(width: 4),
                     Text(
                       '${_getRandomLikes()}',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                        fontSize: 12,
+                      ),
                     ),
                     SizedBox(width: 16),
                     Text(
                       'Reply',
                       style: TextStyle(
-                        color: Colors.grey[800],
+                        color: isDarkMode ? Colors.grey[300] : Colors.grey[800],
                         fontWeight: FontWeight.w500,
                         fontSize: 12,
                       ),
