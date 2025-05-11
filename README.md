@@ -1,50 +1,31 @@
-DailyBytes 📱📰
-A Flutter app that fetches and displays a list of articles from a public API.
+# DailyBytes 📱📰  
+A Flutter app that fetches and displays a list of articles from a public API.  
 Users can search, mark favorites, view full article details, and enjoy a smooth, user-friendly interface.
 
-✨ Features
-Fetch articles from a public API
+## ✨ Features
+- Fetch articles from a public API
+- Client-side search functionality
+- Detailed article view
+- Favorites tab with persistence (SharedPreferences)
+- Pull-to-refresh support
+- Splash screen
+- Custom app icon
+- Smooth UI animations and transitions
+- Comments section (UI only) with draggable sheet
+- Share dialog (UI only) with modern design
+- Responsive design and accessibility improvements
 
-Client-side search functionality
-
-Detailed article view
-
-Favorites tab with persistence (SharedPreferences)
-
-Pull-to-refresh support
-
-Splash screen
-
-Custom app icon
-
-Smooth UI animations and transitions
-
-Comments section (UI only) with draggable sheet
-
-Share dialog (UI only) with modern design
-
-Responsive design and accessibility improvements
-
-🚀 Setup Instructions
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone <your-repo-link>
-cd dailybytes
-Get dependencies:
-
-bash
-Copy
-Edit
-flutter pub get
-Run the app:
-
-bash
-Copy
-Edit
-flutter run
+## 🚀 Setup Instructions
+1. **Clone the repository**:
+   ```bash
+   git clone <your-repo-link>
+   cd dailybytes
+2.Get dependencies:
+  flutter pub get
+  
+3.Run the app:
+  flutter run
+  
 🛠️ Tech Stack
 Flutter SDK: 3.x
 
@@ -57,7 +38,7 @@ Persistence: SharedPreferences
 🧠 State Management Explanation
 This app uses the Provider package for state management.
 The ArticleProvider class extends ChangeNotifier and manages article fetching, searching, and favorites.
-Widgets listen to changes using Consumer or context.watch, allowing for reactive UI updates while keeping business logic separate from presentation.
+Widgets listen to updates using Consumer or context.watch, enabling reactive UI updates and separating business logic from UI.
 
 ⚠️ Known Issues / Limitations
 Comments feature is UI-only (not backed by a live database)
